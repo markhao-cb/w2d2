@@ -17,7 +17,8 @@ class Board
   end
 
   def play
-    until game_over
+    setup_real_board
+    until game_over?
       take_turns
     end
   end
@@ -29,9 +30,17 @@ class Board
   end
 
   def setup_real_board
+    setup_pawns
+    setup_knights
+    setup_bishops
+    setup_kings
+    setup_queens
+    setup_rooks
+    render
   end
-  
+
   private
+
 
   def [](row,col)
     @grid[row][col]
@@ -41,9 +50,37 @@ class Board
     @grid[row][col] = piece
   end
 
+  def setup_pawns
+    (0..7).each do |col|
+      self[1,col] = Pawn.new(:black, [1,col], false, self)
+      self[6,col] = Pawn.new(:white, [6,col], false, self)
+    end
+  end
+
+  def setup_knights
+
+  end
+
+  def setup_bishops
+
+  end
+
+  def setup_kings
+
+  end
+
+  def setup_queens
+
+  end
+
+  def setup_rooks
+
+  end
+
+
   def get_start_and_end_pos
-    start_pos = get_selection
-    end_pos = get_selection
+     start_pos = get_selection
+     end_pos = get_selection
     [start_pos, end_pos]
   end
 
@@ -93,7 +130,7 @@ class Board
   end
 
   def colorize_pos(i,j)
-    (i + j).even? ? :red : :black
+    (i + j).even? ? :light_blue : :blue
   end
 
   def render
@@ -117,17 +154,16 @@ class Board
     @display.unclick
     until @display.clicked?
       @display.get_movement
-      self.render
+      render
     end
     display.cursor_position
+  end
+
+  def game_over?
+    false
   end
 
 end
 
 board = Board.new(8)
-board.setup_test_board
-board.take_turns
-board.take_turns
-board.take_turns
-board.take_turns
-board.take_turns
+board.play
